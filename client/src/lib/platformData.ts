@@ -1,9 +1,6 @@
-import { type User, type InsertUser, type Platform, type StrategyTier, type ROIInputs, type ROIResults } from "@shared/schema";
-import { randomUUID } from "crypto";
+import type { Platform, StrategyTier } from "@shared/schema";
 
-const WEEKS_PER_YEAR = 48;
-
-const platformsData: Platform[] = [
+export const platforms: Platform[] = [
   {
     id: "claude-sonnet",
     name: "Claude (Sonnet 4)",
@@ -406,7 +403,7 @@ const platformsData: Platform[] = [
   },
 ];
 
-const strategyTiersData: StrategyTier[] = [
+export const strategyTiers: StrategyTier[] = [
   {
     tier: 1,
     name: "Foundation",
@@ -430,83 +427,20 @@ const strategyTiersData: StrategyTier[] = [
   },
 ];
 
-export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  getAllPlatforms(): Promise<Platform[]>;
-  getPlatformById(id: string): Promise<Platform | undefined>;
-  getPlatformsByIds(ids: string[]): Promise<Platform[]>;
-  getStrategyTiers(): Promise<StrategyTier[]>;
-  calculateROI(inputs: ROIInputs): Promise<ROIResults>;
-}
+export const capabilityLabels: Record<keyof Platform["capabilities"], string> = {
+  codeGeneration: "Code Generation",
+  reasoning: "Reasoning",
+  languageUnderstanding: "Language Understanding",
+  multimodal: "Multimodal",
+  toolUse: "Tool Use",
+  speed: "Speed",
+  costEfficiency: "Cost Efficiency",
+  enterpriseFeatures: "Enterprise Features",
+  developerExperience: "Developer Experience",
+  documentation: "Documentation",
+};
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private platforms: Platform[];
-  private strategyTiers: StrategyTier[];
-
-  constructor() {
-    this.users = new Map();
-    this.platforms = platformsData;
-    this.strategyTiers = strategyTiersData;
-  }
-
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
-  }
-
-  async getAllPlatforms(): Promise<Platform[]> {
-    return this.platforms;
-  }
-
-  async getPlatformById(id: string): Promise<Platform | undefined> {
-    return this.platforms.find((p) => p.id === id);
-  }
-
-  async getPlatformsByIds(ids: string[]): Promise<Platform[]> {
-    return this.platforms.filter((p) => ids.includes(p.id));
-  }
-
-  async getStrategyTiers(): Promise<StrategyTier[]> {
-    return this.strategyTiers;
-  }
-
-  async calculateROI(inputs: ROIInputs): Promise<ROIResults> {
-    const adoptedEmployees = Math.round(inputs.employees * (inputs.adoptionPercentage / 100));
-    const hourlyRate = inputs.averageSalary / (WEEKS_PER_YEAR * 40);
-    
-    const annualProductivityValue = 
-      adoptedEmployees * inputs.weeklyProductivityGain * hourlyRate * WEEKS_PER_YEAR;
-    
-    const annualTotalCost = inputs.annualPlatformCost + inputs.trainingCost;
-    const netBenefit = annualProductivityValue - annualTotalCost;
-    const roiPercentage = annualTotalCost > 0 ? (netBenefit / annualTotalCost) * 100 : 0;
-    const paybackPeriodMonths = annualProductivityValue > 0 
-      ? (annualTotalCost / annualProductivityValue) * 12 
-      : 0;
-
-    return {
-      annualProductivityValue: Math.round(annualProductivityValue),
-      annualTotalCost: Math.round(annualTotalCost),
-      netBenefit: Math.round(netBenefit),
-      roiPercentage: Math.round(roiPercentage),
-      paybackPeriodMonths: Math.round(paybackPeriodMonths * 10) / 10,
-    };
-  }
-}
-
-export const storage = new MemStorage();
+export const matrixFeatures = [
+  { category: "Core Capabilities", features: ["codeGeneration", "reasoning", "languageUnderstanding", "multimodal", "toolUse", "speed"] },
+  { category: "Enterprise & Cost", features: ["costEfficiency", "enterpriseFeatures", "developerExperience", "documentation"] },
+];
