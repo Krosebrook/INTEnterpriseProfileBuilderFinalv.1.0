@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Platform, type StrategyTier, type ROIInputs, type ROIResults } from "@shared/schema";
+import { type User, type UpsertUser, type Platform, type StrategyTier, type ROIInputs, type ROIResults } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 const WEEKS_PER_YEAR = 48;
@@ -432,8 +432,7 @@ const strategyTiersData: StrategyTier[] = [
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  createUser(user: UpsertUser): Promise<User>;
   getAllPlatforms(): Promise<Platform[]>;
   getPlatformById(id: string): Promise<Platform | undefined>;
   getPlatformsByIds(ids: string[]): Promise<Platform[]>;
@@ -456,16 +455,14 @@ export class MemStorage implements IStorage {
     return this.users.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+  async createUser(insertUser: UpsertUser): Promise<User> {
+    const now = new Date();
+    const user: User = { 
+      ...insertUser, 
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.users.set(user.id, user);
     return user;
   }
 
