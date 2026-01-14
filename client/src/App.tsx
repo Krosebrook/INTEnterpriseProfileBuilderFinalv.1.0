@@ -10,7 +10,9 @@ import { ComparisonTab } from "@/components/ComparisonTab";
 import { MatrixTab } from "@/components/MatrixTab";
 import { ROICalculator } from "@/components/ROICalculator";
 import { StrategyTab } from "@/components/StrategyTab";
-import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles } from "lucide-react";
+import { AssessmentTab } from "@/components/AssessmentTab";
+import { ProfileBuilderTab } from "@/components/ProfileBuilderTab";
+import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen } from "lucide-react";
 
 function PlatformExplorer() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -104,6 +106,22 @@ function PlatformExplorer() {
                 <Star className="w-4 h-4" />
                 <span className="hidden sm:inline">Strategy</span>
               </TabsTrigger>
+              <TabsTrigger 
+                value="assessment" 
+                className="flex-1 h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none gap-2"
+                data-testid="tab-assessment"
+              >
+                <ClipboardCheck className="w-4 h-4" />
+                <span className="hidden sm:inline">Assess</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="profile" 
+                className="flex-1 h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none gap-2"
+                data-testid="tab-profile"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">Profile</span>
+              </TabsTrigger>
             </TabsList>
           </div>
         </div>
@@ -129,6 +147,12 @@ function PlatformExplorer() {
           </TabsContent>
           <TabsContent value="strategy" className="mt-0">
             <StrategyTab />
+          </TabsContent>
+          <TabsContent value="assessment" className="mt-0">
+            <AssessmentTab />
+          </TabsContent>
+          <TabsContent value="profile" className="mt-0">
+            <ProfileBuilderTab />
           </TabsContent>
         </main>
       </Tabs>
