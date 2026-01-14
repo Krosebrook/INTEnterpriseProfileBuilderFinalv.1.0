@@ -54,7 +54,7 @@ export function MatrixTab() {
               <Badge
                 key={category}
                 variant={activeCategory === category ? "default" : "outline"}
-                className="cursor-pointer hover-elevate"
+                className={`cursor-pointer hover-elevate ${activeCategory !== category ? "text-[#edbd11]" : ""}`}
                 onClick={() => setActiveCategory(category)}
                 data-testid={`filter-matrix-${category.toLowerCase().replace(/ /g, "-")}`}
               >
