@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExplorerTab } from "@/components/ExplorerTab";
 import { ComparisonTab } from "@/components/ComparisonTab";
 import { MatrixTab } from "@/components/MatrixTab";
@@ -12,12 +14,14 @@ import { ROICalculator } from "@/components/ROICalculator";
 import { StrategyTab } from "@/components/StrategyTab";
 import { AssessmentTab } from "@/components/AssessmentTab";
 import { ProfileBuilderTab } from "@/components/ProfileBuilderTab";
-import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen, LogIn, LogOut, User } from "lucide-react";
 import sunsetBackground from "@assets/generated_images/sunset_landscape_with_orange_sun.png";
 
 function PlatformExplorer() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("explorer");
+  const { user, isLoading, isAuthenticated } = useAuth();
 
   const togglePlatformSelection = (id: string) => {
     setSelectedPlatforms((prev) => {
@@ -70,6 +74,31 @@ function PlatformExplorer() {
               </span>
             )}
             <ThemeToggle />
+            
+            {isLoading ? (
+              <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+            ) : isAuthenticated && user ? (
+              <div className="flex items-center gap-2">
+                <Avatar className="w-8 h-8">
+                  <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || 'User'} />
+                  <AvatarFallback>
+                    <User className="w-4 h-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <a href="/api/logout" data-testid="button-logout">
+                  <Button variant="ghost" size="icon" className="text-[#fac78e]">
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            ) : (
+              <a href="/api/login" data-testid="button-login">
+                <Button variant="outline" size="sm" className="text-[#fac78e]">
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Login
+                </Button>
+              </a>
+            )}
           </div>
         </div>
       </header>
