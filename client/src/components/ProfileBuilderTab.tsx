@@ -23,6 +23,7 @@ function RoleSelector({ selectedRole, onSelectRole }: { selectedRole: Role; onSe
           size="sm"
           onClick={() => onSelectRole(role.id)}
           data-testid={`button-role-${role.id.toLowerCase()}`}
+          className={selectedRole !== role.id ? "text-[#fac78e]" : undefined}
         >
           {role.label}
         </Button>
