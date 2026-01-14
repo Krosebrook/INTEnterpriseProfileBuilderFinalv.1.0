@@ -2,11 +2,16 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import type { ROIInputs } from "@shared/schema";
+import { setupAuth, registerAuthRoutes } from "./replit_integrations/auth";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  
+  // Setup Replit Auth (must be before other routes)
+  await setupAuth(app);
+  registerAuthRoutes(app);
   
   app.get("/api/platforms", async (_req, res) => {
     try {
