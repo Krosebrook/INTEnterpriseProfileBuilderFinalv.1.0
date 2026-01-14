@@ -13,6 +13,7 @@ import { StrategyTab } from "@/components/StrategyTab";
 import { AssessmentTab } from "@/components/AssessmentTab";
 import { ProfileBuilderTab } from "@/components/ProfileBuilderTab";
 import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen } from "lucide-react";
+import sunsetBackground from "@assets/generated_images/sunset_landscape_with_orange_sun.png";
 
 function PlatformExplorer() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -31,8 +32,24 @@ function PlatformExplorer() {
   const goToExplorer = () => setActiveTab("explorer");
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="min-h-screen relative">
+      {/* Fixed Background Image */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: `url(${sunsetBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        {/* Gradient Overlay for Readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,14,28,0.75)] via-[rgba(20,28,50,0.70)] to-[rgba(54,32,8,0.65)]" />
+      </div>
+      
+      {/* Scrollable Foreground Content */}
+      <div className="relative z-10">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
@@ -58,7 +75,7 @@ function PlatformExplorer() {
       </header>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="sticky top-16 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="sticky top-16 z-40 w-full border-b bg-background/85 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
           <div className="max-w-7xl mx-auto px-6">
             <TabsList className="w-full h-12 bg-transparent p-0 gap-0">
               <TabsTrigger 
@@ -157,7 +174,7 @@ function PlatformExplorer() {
         </main>
       </Tabs>
 
-      <footer className="border-t bg-muted/30">
+      <footer className="border-t bg-background/85 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -182,6 +199,7 @@ function PlatformExplorer() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

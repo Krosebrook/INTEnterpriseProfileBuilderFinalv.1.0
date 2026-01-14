@@ -13,6 +13,29 @@
 
 ---
 
+## Brand Colors (Sunset/Sunrise Theme)
+
+**Fixed Background:** A dramatic sunset landscape with mountain silhouettes, golden wheat field, and bright orange sun. The background image stays fixed while content scrolls over it.
+
+**Color Palette (Extracted from brand image):**
+
+| Token | Light Mode (HSL) | Dark Mode (HSL) | Usage |
+|-------|-----------------|-----------------|-------|
+| Primary | 27 85% 55% (Sunrise Orange) | 27 85% 50% | Buttons, active states, accent elements |
+| Secondary | 38 60% 50% (Golden Wheat) | 38 50% 45% | Secondary actions, highlights |
+| Accent | 38 72% 58% (Warm Gold) | 38 65% 52% | Badges, special emphasis |
+| Background | 220 30% 12% (Deep Twilight) | 40 25% 96% (Warm Cream) | Page background |
+| Card | 220 25% 16% (Slate Blue) | 40 20% 92% (Soft Ivory) | Card surfaces |
+| Foreground | 40 20% 95% (Warm White) | 220 30% 15% (Deep Slate) | Primary text |
+| Muted | 220 15% 25% | 40 10% 85% | Secondary text, disabled states |
+
+**Overlay Strategy:**
+- Content appears over a fixed sunset background image
+- Semi-transparent gradient overlay (dark blue → warm brown) ensures readability
+- Cards and UI elements use 85% opacity backgrounds with backdrop blur
+
+---
+
 ## Typography System
 
 **Font Stack:**
@@ -149,14 +172,18 @@
 
 ## Images & Visual Assets
 
-**Icons:** Heroicons (outline style) via CDN for UI elements, platform logos as inline SVGs or PNGs
+**Icons:** Lucide React icons for UI elements, platform logos as inline SVGs or PNGs
 
 **Platform Logos:** 
 - Standardized square containers (48px × 48px)
 - Maintain aspect ratios, center within container
-- Grayscale on hover for uniformity
+- Subtle hover effects
 
-**No Hero Image:** This is a tool/dashboard, not a marketing page - lead with functional interface immediately
+**Fixed Background Image:**
+- Dramatic sunset landscape with orange sun, mountain silhouettes, and golden wheat field
+- Background stays fixed (background-attachment: fixed) while content scrolls
+- Gradient overlay applied for text readability: from deep twilight blue (top) to warm brown (bottom)
+- Creates immersive, branded experience while maintaining usability
 
 **Illustrations (Optional):**
 - Abstract data visualization graphics for empty states
