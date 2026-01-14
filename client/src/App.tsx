@@ -86,7 +86,7 @@ function PlatformExplorer() {
                   </AvatarFallback>
                 </Avatar>
                 <a href="/api/logout" data-testid="button-logout">
-                  <Button variant="ghost" size="icon" className="text-[#fac78e]">
+                  <Button variant="ghost" size="icon" className="text-[#000000]">
                     <LogOut className="w-4 h-4" />
                   </Button>
                 </a>
