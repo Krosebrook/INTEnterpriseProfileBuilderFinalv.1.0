@@ -14,6 +14,8 @@ import { ROICalculator } from "@/components/ROICalculator";
 import { StrategyTab } from "@/components/StrategyTab";
 import { AssessmentTab } from "@/components/AssessmentTab";
 import { ProfileBuilderTab } from "@/components/ProfileBuilderTab";
+import { ErrorBoundary, TabErrorBoundary } from "@/components/ErrorBoundary";
+import { SkipLink } from "@/components/SkipLink";
 import { useAuth } from "@/hooks/use-auth";
 import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen, LogIn, LogOut, User } from "lucide-react";
 import sunsetBackground from "@assets/generated_images/sunset_landscape_with_orange_sun.png";
@@ -37,6 +39,7 @@ function PlatformExplorer() {
 
   return (
     <div className="min-h-screen relative">
+      <SkipLink />
       {/* Fixed Background Image */}
       <div 
         className="fixed inset-0 z-0"
@@ -172,33 +175,47 @@ function PlatformExplorer() {
           </div>
         </div>
 
-        <main className="max-w-7xl mx-auto px-6 py-8">
+        <main id="main-content" className="max-w-7xl mx-auto px-6 py-8" tabIndex={-1}>
           <TabsContent value="explorer" className="mt-0">
-            <ExplorerTab 
-              selectedPlatforms={selectedPlatforms}
-              onToggleSelect={togglePlatformSelection}
-            />
+            <TabErrorBoundary>
+              <ExplorerTab 
+                selectedPlatforms={selectedPlatforms}
+                onToggleSelect={togglePlatformSelection}
+              />
+            </TabErrorBoundary>
           </TabsContent>
           <TabsContent value="comparison" className="mt-0">
-            <ComparisonTab 
-              selectedPlatforms={selectedPlatforms}
-              onBack={goToExplorer}
-            />
+            <TabErrorBoundary>
+              <ComparisonTab 
+                selectedPlatforms={selectedPlatforms}
+                onBack={goToExplorer}
+              />
+            </TabErrorBoundary>
           </TabsContent>
           <TabsContent value="matrix" className="mt-0">
-            <MatrixTab />
+            <TabErrorBoundary>
+              <MatrixTab />
+            </TabErrorBoundary>
           </TabsContent>
           <TabsContent value="roi" className="mt-0">
-            <ROICalculator />
+            <TabErrorBoundary>
+              <ROICalculator />
+            </TabErrorBoundary>
           </TabsContent>
           <TabsContent value="strategy" className="mt-0">
-            <StrategyTab />
+            <TabErrorBoundary>
+              <StrategyTab />
+            </TabErrorBoundary>
           </TabsContent>
           <TabsContent value="assessment" className="mt-0">
-            <AssessmentTab />
+            <TabErrorBoundary>
+              <AssessmentTab />
+            </TabErrorBoundary>
           </TabsContent>
           <TabsContent value="profile" className="mt-0">
-            <ProfileBuilderTab />
+            <TabErrorBoundary>
+              <ProfileBuilderTab />
+            </TabErrorBoundary>
           </TabsContent>
         </main>
       </Tabs>
@@ -235,12 +252,14 @@ function PlatformExplorer() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <PlatformExplorer />
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <PlatformExplorer />
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

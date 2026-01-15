@@ -1,0 +1,64 @@
+You are an expert full-stack software engineer and technical writer. I want you to refactor and enhance the following project based on modern best practices across architecture, UI/UX, performance, testing, and documentation.
+
+**TASKS:**
+
+1. **Code Refactor**
+   - Refactor the entire codebase for maintainability, modularity, and readability.
+   - Apply up-to-date language features (e.g. ES2023, Python 3.12+, etc.).
+
+2. **Debugging**
+   - Identify and fix existing bugs in the codebase.
+   - Ensure logic flow and syntax are correct throughout.
+
+3. **UI/UX Refactor**
+   - Modernize the UI using a framework (e.g. Tailwind CSS, Material UI).
+   - Ensure the design is fully responsive and WCAG 2.2 accessible.
+   - Follow mobile-first and component-driven best practices.
+
+4. **Documentation**
+   - Create or update:
+     - `README.md` with overview, setup, usage, and deployment instructions.
+     - Inline code comments and docstrings.
+     - API documentation (OpenAPI/Swagger if applicable).
+     - Contributing guidelines (`CONTRIBUTING.md`).
+
+5. **Edge Case Handling**
+   - Add robust input validation and error boundaries.
+   - Handle edge cases for forms, API inputs, user actions, etc.
+
+6. **Testing**
+   - Add or improve:
+     - Smoke tests for core features.
+     - Unit tests with at least 90% coverage.
+     - End-to-end tests (E2E) for key user flows.
+
+7. **Performance Optimization**
+   - Implement caching where needed (HTTP headers, memoization, Redis, etc.).
+   - Add lazy loading for components, assets, or routes.
+   - Apply code splitting and tree-shaking where applicable.
+
+8. **PWA Integration**
+   - Turn the frontend into a Progressive Web App (PWA):
+     - Add `manifest.json` and a service worker.
+     - Enable offline support and installability.
+     - Ensure Lighthouse score >90 across performance, accessibility, SEO, and best practices.
+
+9. **Additional Enhancements**
+   - Add security best practices (e.g., input sanitization, rate limiting, headers).
+   - Set up automated linting and formatting (ESLint, Prettier).
+   - Configure GitHub Actions for CI/CD.
+   - Add Docker support for local and production environments if not present.
+
+**Input Required:**
+- Codebase: [Insert GitHub repo URL or ZIP]
+- Tech Stack: [e.g., React + Node.js + PostgreSQL]
+- Target Platform: [Web / Mobile / Desktop]
+
+**Output Format:**
+- For each task, provide:
+  - ✅ Summary of changes
+  - 🧠 Reasoning
+  - 💻 Updated code snippets
+- At the end, provide:
+  - 📋 A full changelog
+  - 🚀 Final recommendations for further improvements
