@@ -4,7 +4,32 @@
 
 INT Platform Explorer is an enterprise decision-support tool for comparing AI platforms. It enables organizations to evaluate 16 AI platforms across 25 capability dimensions, calculate ROI, and generate tiered recommendations for stakeholder presentations.
 
-The application is built as a React single-page application with an Express backend, using a tabbed interface with five main sections: Explorer (browse/filter platforms), Comparison (side-by-side evaluation), Matrix (capability grid), ROI Calculator, and Strategy (tiered recommendations).
+The application is built as a React single-page application with an Express backend, using a tabbed interface with seven main sections: Explorer (browse/filter platforms), Comparison (side-by-side evaluation), Matrix (capability grid), ROI Calculator, Strategy (tiered recommendations), Assessment (AI readiness wizard), and Profile Builder (Claude configuration guide).
+
+## Recent Changes (January 15, 2026)
+
+**Security Enhancements:**
+- Added Helmet middleware with CSP configuration (environment-aware for dev HMR)
+- Implemented rate limiting (100 req/15min general, 20 req/min for ROI)
+- Added comprehensive Zod validation for all POST endpoints
+
+**Error Handling:**
+- Added ErrorBoundary and TabErrorBoundary components for graceful failure handling
+- Each tab content wrapped with error boundaries for isolation
+
+**Accessibility:**
+- Added SkipLink component for keyboard navigation
+- Main content has proper id and tabIndex for focus management
+
+**PWA Support:**
+- Added manifest.json with app metadata and icons
+- Implemented service worker with offline caching strategy
+- Added meta tags for mobile web app support
+
+**Documentation:**
+- Created comprehensive README.md with setup instructions
+- Added CONTRIBUTING.md with development guidelines
+- Updated AUDIT_REPORT.md with resolved issues
 
 ## User Preferences
 

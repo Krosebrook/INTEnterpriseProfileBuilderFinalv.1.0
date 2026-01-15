@@ -14,11 +14,13 @@ The INT Platform Explorer demonstrates a **solid architectural foundation** with
 | Area | Assessment |
 |------|------------|
 | Architecture & Design | ✅ Strong modular design |
-| Security & Authentication | ⚠️ Auth present but POST endpoints unprotected |
-| Input Validation | ❌ Missing - requires immediate attention |
-| Error Handling | ⚠️ Needs improvement |
-| Accessibility | ⚠️ Not verified - skip link missing |
-| Type Safety | ✅ Fixed - all compilation errors resolved |
+| Security & Authentication | ✅ Helmet CSP, rate limiting, session security |
+| Input Validation | ✅ Zod schemas for all POST endpoints |
+| Error Handling | ✅ Error boundaries with graceful fallbacks |
+| Accessibility | ✅ Skip link, keyboard navigation, ARIA |
+| Type Safety | ✅ All compilation errors resolved |
+| PWA Support | ✅ Manifest, service worker, offline caching |
+| Documentation | ✅ README.md, CONTRIBUTING.md, API docs |
 
 ---
 
@@ -70,9 +72,9 @@ The INT Platform Explorer demonstrates a **solid architectural foundation** with
 
 | Gap | Recommendation | Priority |
 |-----|----------------|----------|
-| **Gap 2.1: No Server-Side Input Validation** | POST endpoints accept JSON without Zod schema validation. `/api/roi/calculate` only validates `employees` and `averageSalary`, ignoring other required fields—invalid inputs can cause NaN results. `/api/platforms/compare` accepts arbitrary IDs without verifying they exist—returns partial results for unknown IDs instead of a 400 error. **Required fix**: Implement comprehensive schema validation for all POST endpoints. | **High** |
-| **Gap 2.2: Unauthenticated POST Endpoints** | `/api/roi/calculate` and `/api/platforms/compare` accept POST requests from unauthenticated users. Combined with lack of input validation (Gap 2.1), anonymous users can submit arbitrary data. **Required decision**: Either add `isAuthenticated` middleware or ensure robust input validation. | **High** |
-| **Gap 2.3: Security Headers (Best Practice)** | No Helmet middleware for security headers. Consider adding for defense-in-depth. | Low |
+| ~~**Gap 2.1: No Server-Side Input Validation**~~ | ✅ **RESOLVED**: Fixed on January 15, 2026. Added comprehensive Zod validation schemas in `shared/validation.ts` for all POST endpoints. ROI inputs now validate: employees (1-1M integer), averageSalary ($1K-$10M), adoptionPercentage (1-100%), weeklyProductivityGain (0.1-40 hours), costs (non-negative). Platform compare validates array of 1-4 non-empty string IDs. Invalid platform IDs now return proper 400 error with details. | ~~High~~ → **Done** |
+| **Gap 2.2: Unauthenticated POST Endpoints** | These endpoints remain public by design for this read-only comparison tool. Rate limiting (20 req/min for ROI, 100 req/15min general) now protects against abuse. Combined with robust input validation, risk is mitigated. | Low |
+| ~~**Gap 2.3: Security Headers (Best Practice)**~~ | ✅ **RESOLVED**: Fixed on January 15, 2026. Added Helmet middleware with CSP configuration (style-src, font-src, img-src, connect-src). CSP allows ws/wss in development for HMR support. | ~~Low~~ → **Done** |
 
 ---
 
@@ -103,7 +105,7 @@ The INT Platform Explorer demonstrates a **solid architectural foundation** with
 
 | Gap | Recommendation | Priority |
 |-----|----------------|----------|
-| **Gap 4.1: ROI Calculation Input Handling** | `calculateROI` in storage.ts doesn't guard against NaN, negative values, or division edge cases. Route only validates `employees` and `averageSalary`, ignoring other required fields (`adoptionPercentage`, `weeklyProductivityGain`, etc.). This can produce NaN or incorrect results. Add comprehensive validation and sanitization. | **High** |
+| ~~**Gap 4.1: ROI Calculation Input Handling**~~ | ✅ **RESOLVED**: Fixed on January 15, 2026. Zod validation in `shared/validation.ts` now enforces: employees (positive integer 1-1M), averageSalary (min $1K), adoptionPercentage (1-100%), weeklyProductivityGain (0.1-40 hours), costs (non-negative). All fields validated before reaching storage.calculateROI, preventing NaN or invalid calculations. | ~~High~~ → **Done** |
 
 ---
 
@@ -120,7 +122,7 @@ The INT Platform Explorer demonstrates a **solid architectural foundation** with
 
 | Gap | Recommendation | Priority |
 |-----|----------------|----------|
-| **Gap 5.1: No Error Boundaries** | React lacks error boundaries for graceful component failure handling. | Medium |
+| ~~**Gap 5.1: No Error Boundaries**~~ | ✅ **RESOLVED**: Fixed on January 15, 2026. Added `ErrorBoundary` and `TabErrorBoundary` components in `client/src/components/ErrorBoundary.tsx`. Root-level ErrorBoundary wraps entire app for catastrophic failures. Each tab content is wrapped with TabErrorBoundary for granular error isolation. Provides user-friendly error UI with "Try Again" and "Reload Page" options. | ~~Medium~~ → **Done** |
 
 ---
 
