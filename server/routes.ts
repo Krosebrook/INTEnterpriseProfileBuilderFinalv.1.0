@@ -1,7 +1,7 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { roiInputsSchema, platformCompareSchema } from "@shared/validation";
+import { roiInputsSchema, platformCompareSchema, prdInputSchema } from "@shared/validation";
 import { setupAuth, registerAuthRoutes } from "./replit_integrations/auth";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -47,8 +47,12 @@ export async function registerRoutes(
 
   app.use("/api", apiLimiter);
   
-  await setupAuth(app);
-  registerAuthRoutes(app);
+  try {
+    await setupAuth(app);
+    registerAuthRoutes(app);
+  } catch (error) {
+    console.warn("Auth setup skipped (not in Replit environment):", error instanceof Error ? error.message : error);
+  }
   
   app.get("/api/platforms", async (_req: Request, res: Response) => {
     try {
@@ -122,6 +126,23 @@ export async function registerRoutes(
       res.json(results);
     } catch (error) {
       res.status(500).json({ message: "Failed to calculate ROI" });
+    }
+  });
+
+  app.post("/api/prd/generate", async (req: Request, res: Response) => {
+    try {
+      const parseResult = prdInputSchema.safeParse(req.body);
+      if (!parseResult.success) {
+        const error = fromError(parseResult.error);
+        return res.status(400).json({ message: error.toString() });
+      }
+      
+      const prd = await storage.generatePRD(parseResult.data);
+      res.json(prd);
+    } catch (error) {
+      console.error("PRD generation error:", error);
+      const message = error instanceof Error ? error.message : "Failed to generate PRD";
+      res.status(500).json({ message: `Failed to generate PRD: ${message}` });
     }
   });
 

@@ -28,5 +28,12 @@ export const platformCompareSchema = z.object({
     .max(4, "Maximum 4 platforms for comparison"),
 });
 
+export const prdInputSchema = z.object({
+  featureIdea: z.string()
+    .min(10, "Feature idea must be at least 10 characters")
+    .max(5000, "Feature idea cannot exceed 5000 characters"),
+});
+
 export type ValidatedROIInputs = z.infer<typeof roiInputsSchema>;
 export type ValidatedPlatformCompare = z.infer<typeof platformCompareSchema>;
+export type ValidatedPRDInput = z.infer<typeof prdInputSchema>;
