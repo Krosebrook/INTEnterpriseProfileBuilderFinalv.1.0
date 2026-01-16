@@ -53,3 +53,19 @@ export interface StrategyTier {
   platforms: string[];
   rationale: string;
 }
+
+export interface PRDInput {
+  featureIdea: string;
+}
+
+export interface PRDSection {
+  title: string;
+  content: string;
+}
+
+export interface PRDDocument {
+  title: string;
+  generatedAt: string;
+  featureIdea: string;
+  sections: PRDSection[];
+}
