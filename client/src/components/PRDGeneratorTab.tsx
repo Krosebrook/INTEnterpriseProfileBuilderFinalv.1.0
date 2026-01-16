@@ -66,7 +66,9 @@ export function PRDGeneratorTab() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `PRD_${new Date().toISOString().split('T')[0]}.md`;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const sanitizedTitle = prdDocument.featureIdea.slice(0, 30).replace(/[^a-zA-Z0-9]/g, '_');
+    a.download = `PRD_${sanitizedTitle}_${timestamp}.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

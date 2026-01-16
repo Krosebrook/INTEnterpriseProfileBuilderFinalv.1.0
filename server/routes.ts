@@ -140,7 +140,9 @@ export async function registerRoutes(
       const prd = await storage.generatePRD(parseResult.data);
       res.json(prd);
     } catch (error) {
-      res.status(500).json({ message: "Failed to generate PRD" });
+      console.error("PRD generation error:", error);
+      const message = error instanceof Error ? error.message : "Failed to generate PRD";
+      res.status(500).json({ message: `Failed to generate PRD: ${message}` });
     }
   });
 
