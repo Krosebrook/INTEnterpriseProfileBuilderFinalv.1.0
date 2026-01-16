@@ -47,8 +47,12 @@ export async function registerRoutes(
 
   app.use("/api", apiLimiter);
   
-  await setupAuth(app);
-  registerAuthRoutes(app);
+  try {
+    await setupAuth(app);
+    registerAuthRoutes(app);
+  } catch (error) {
+    console.warn("Auth setup skipped (not in Replit environment):", error instanceof Error ? error.message : error);
+  }
   
   app.get("/api/platforms", async (_req: Request, res: Response) => {
     try {
